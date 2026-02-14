@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{base::layout(~{::section})}">
+<head>
+	<meta charset="UTF-8">
+	<title>Checkout</title>
+</head>
+<body>
+<section>
+	<div class="container-fluid mt-4 px-3 px-md-5 py-4">
+
+		<!-- Page Header -->
+		<div class="row mb-4">
+			<div class="col-12 text-center">
+				<h2 class="fw-bold mb-2">
+					<i class="fas fa-shopping-cart text-primary me-2"></i>Checkout
+				</h2>
+				<p class="text-muted">Complete your order by providing shipping details</p>
+
+				<!-- Progress Steps -->
+				<div class="checkout-progress mt-4 mb-4">
+					<div class="progress-step completed">
+						<div class="step-circle">
+							<i class="fas fa-shopping-bag"></i>
+						</div>
+						<span class="step-label">Cart</span>
+					</div>
+					<div class="progress-line completed"></div>
+					<div class="progress-step active">
+						<div class="step-circle">
+							<i class="fas fa-credit-card"></i>
+						</div>
+						<span class="step-label">Checkout</span>
+					</div>
+					<div class="progress-line"></div>
+					<div class="progress-step">
+						<div class="step-circle">
+							<i class="fas fa-check-circle"></i>
+						</div>
+						<span class="step-label">Complete</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<form action="/user/save-order" method="post" id="orders" novalidate>
+			<div class="row g-4">
+
+				<!-- Billing Address Section -->
+				<div class="col-lg-7">
+					<div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+						<!-- Card Header with Gradient -->
+						<div class="card-header text-white py-4 border-0"
+							 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+							<h5 class="mb-0 fw-bold">
+								<i class="fas fa-map-marker-alt me-2"></i>Billing & Shipping Address
+							</h5>
+						</div>
+
+						<div class="card-body p-4 p-md-5">
+
+							<!-- Name Fields -->
+							<div class="row g-3 mb-4">
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-user text-primary me-2"></i>First Name
+									</label>
+									<input type="text"
+										   name="firstName"
+										   required
+										   class="form-control form-control-lg rounded-3 border-2"
+										   placeholder="Enter first name">
+								</div>
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-user text-primary me-2"></i>Last Name
+									</label>
+									<input type="text"
+										   name="lastName"
+										   required
+										   class="form-control form-control-lg rounded-3 border-2"
+										   placeholder="Enter last name">
+								</div>
+							</div>
+
+							<!-- Contact Fields -->
+							<div class="row g-3 mb-4">
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-envelope text-info me-2"></i>Email Address
+									</label>
+									<div class="input-group input-group-lg">
+                                            <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                                <i class="fas fa-at text-muted"></i>
+                                            </span>
+										<input type="email"
+											   name="email"
+											   required
+											   class="form-control border-start-0 rounded-end-3"
+											   placeholder="your@email.com">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-mobile-alt text-success me-2"></i>Mobile Number
+									</label>
+									<div class="input-group input-group-lg">
+                                            <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                                <i class="fas fa-phone text-muted"></i>
+                                            </span>
+										<input type="tel"
+											   name="mobileNo"
+											   required
+											   class="form-control border-start-0 rounded-end-3"
+											   placeholder="Enter mobile number"
+											   pattern="[0-9]{10}"
+											   maxlength="10">
+									</div>
+								</div>
+							</div>
+
+							<!-- Address Fields -->
+							<div class="row g-3 mb-4">
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-home text-danger me-2"></i>Address
+									</label>
+									<input type="text"
+										   name="address"
+										   required
+										   class="form-control form-control-lg rounded-3 border-2"
+										   placeholder="Street address">
+								</div>
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-city text-warning me-2"></i>City
+									</label>
+									<input type="text"
+										   name="city"
+										   required
+										   class="form-control form-control-lg rounded-3 border-2"
+										   placeholder="Enter city">
+								</div>
+							</div>
+
+							<!-- State and Pincode -->
+							<div class="row g-3">
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-flag text-primary me-2"></i>State
+									</label>
+									<input type="text"
+										   name="state"
+										   required
+										   class="form-control form-control-lg rounded-3 border-2"
+										   placeholder="Enter state">
+								</div>
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-mail-bulk text-success me-2"></i>Pincode
+									</label>
+									<input type="text"
+										   name="pincode"
+										   required
+										   class="form-control form-control-lg rounded-3 border-2"
+										   placeholder="Enter pincode"
+										   pattern="[0-9]{6}"
+										   maxlength="6">
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- Order Summary and Payment Section -->
+				<div class="col-lg-5">
+
+					<!-- Order Summary Card -->
+					<div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-4 sticky-top" style="top: 20px;">
+
+						<!-- Card Header with Gradient -->
+						<div class="card-header text-white py-4 border-0"
+							 style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+							<h5 class="mb-0 fw-bold">
+								<i class="fas fa-receipt me-2"></i>Order Summary
+							</h5>
+						</div>
+
+						<div class="card-body p-4">
+
+							<!-- Price Breakdown -->
+							<div class="price-summary">
+								<div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+									<div class="d-flex align-items-center">
+										<i class="fas fa-box text-primary me-2"></i>
+										<span class="text-muted">Subtotal</span>
+									</div>
+									<span class="fw-semibold fs-5">
+                                            <th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block>[[${orderPrice}]]
+                                        </span>
+								</div>
+
+								<div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+									<div class="d-flex align-items-center">
+										<i class="fas fa-truck text-success me-2"></i>
+										<span class="text-muted">Delivery Fee</span>
+									</div>
+									<span class="fw-semibold">
+                                            <th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block>250
+                                        </span>
+								</div>
+
+								<div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+									<div class="d-flex align-items-center">
+										<i class="fas fa-percentage text-warning me-2"></i>
+										<span class="text-muted">Tax (GST)</span>
+									</div>
+									<span class="fw-semibold">
+                                            <th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block>100
+                                        </span>
+								</div>
+
+								<div class="d-flex justify-content-between align-items-center mb-0">
+									<div class="d-flex align-items-center">
+										<i class="fas fa-coins text-success me-2"></i>
+										<span class="fw-bold fs-5">Total Amount</span>
+									</div>
+									<span class="fw-bold text-success fs-4">
+                                            <th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block>[[${totalOrderPrice}]]
+                                        </span>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<!-- Payment Method Card -->
+					<div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+						<!-- Card Header -->
+						<div class="card-header bg-light py-3 border-0">
+							<h6 class="mb-0 fw-bold text-dark">
+								<i class="fas fa-credit-card me-2 text-primary"></i>Payment Method
+							</h6>
+						</div>
+
+						<div class="card-body p-4">
+
+							<!-- Payment Type Selection -->
+							<div class="mb-4">
+								<label class="form-label fw-semibold text-muted mb-3">
+									<i class="fas fa-wallet text-success me-2"></i>Select Payment Type
+								</label>
+
+								<div class="payment-options">
+									<!-- Cash on Delivery -->
+									<div class="payment-option mb-3">
+										<input type="radio"
+											   name="paymentType"
+											   value="COD"
+											   id="cod"
+											   class="payment-radio"
+											   required>
+										<label for="cod" class="payment-label">
+											<div class="payment-card">
+												<div class="d-flex align-items-center">
+													<div class="payment-icon bg-success-subtle text-success">
+														<i class="fas fa-money-bill-wave fs-4"></i>
+													</div>
+													<div class="ms-3">
+														<h6 class="mb-0 fw-bold">Cash on Delivery</h6>
+														<small class="text-muted">Pay when you receive</small>
+													</div>
+												</div>
+												<div class="checkmark">
+													<i class="fas fa-check-circle"></i>
+												</div>
+											</div>
+										</label>
+									</div>
+
+									<!-- Online Payment -->
+									<div class="payment-option">
+										<input type="radio"
+											   name="paymentType"
+											   value="ONLINE"
+											   id="online"
+											   class="payment-radio"
+											   required>
+										<label for="online" class="payment-label">
+											<div class="payment-card">
+												<div class="d-flex align-items-center">
+													<div class="payment-icon bg-primary-subtle text-primary">
+														<i class="fas fa-credit-card fs-4"></i>
+													</div>
+													<div class="ms-3">
+														<h6 class="mb-0 fw-bold">Online Payment</h6>
+														<small class="text-muted">UPI, Cards, Net Banking</small>
+													</div>
+												</div>
+												<div class="checkmark">
+													<i class="fas fa-check-circle"></i>
+												</div>
+											</div>
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<!-- Security Info -->
+							<div class="alert alert-light border rounded-3 mb-4">
+								<div class="d-flex align-items-start">
+									<i class="fas fa-shield-alt text-success fs-5 me-2 mt-1"></i>
+									<div>
+										<small class="text-muted">
+											<strong>Secure Payment:</strong> Your payment information is encrypted and secure
+										</small>
+									</div>
+								</div>
+							</div>
+
+							<!-- Place Order Button -->
+							<button type="submit" class="btn btn-primary btn-lg w-100 rounded-3 shadow-sm">
+								<i class="fas fa-check-circle me-2"></i>Place Order
+							</button>
+
+							<!-- Terms & Conditions -->
+							<p class="text-center text-muted small mt-3 mb-0">
+								By placing this order, you agree to our
+								<a href="#" class="text-decoration-none">Terms & Conditions</a>
+							</p>
+
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</form>
+
+	</div>
+
+	<!-- Custom Styles -->
+	<style>
+		/* Progress Steps */
+        .checkout-progress {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .step-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.completed .step-circle,
+        .progress-step.active .step-circle {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .step-label {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .progress-step.active .step-label,
+        .progress-step.completed .step-label {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .progress-line {
+            width: 100px;
+            height: 2px;
+            background: #e9ecef;
+            margin: 0 10px;
+            margin-bottom: 25px;
+        }
+
+        .progress-line.completed {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Payment Options */
+        .payment-radio {
+            display: none;
+        }
+
+        .payment-label {
+            cursor: pointer;
+            margin-bottom: 0;
+            width: 100%;
+        }
+
+        .payment-card {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+        }
+
+        .payment-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .payment-radio:checked + .payment-label .payment-card {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkmark {
+            opacity: 0;
+            color: #667eea;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .payment-radio:checked + .payment-label .checkmark {
+            opacity: 1;
+        }
+
+        /* Form Styles */
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .rounded-4 {
+            border-radius: 1rem !important;
+        }
+
+        .sticky-top {
+            position: sticky;
+            z-index: 1020;
+        }
+
+        .input-group:focus-within .input-group-text {
+            border-color: #667eea;
+            background-color: #f8f9ff;
+        }
+
+        .bg-success-subtle {
+            background-color: rgba(25, 135, 84, 0.1) !important;
+        }
+
+        .bg-primary-subtle {
+            background-color: rgba(102, 126, 234, 0.1) !important;
+        }
+
+        @media (max-width: 992px) {
+            .sticky-top {
+                position: relative;
+            }
+
+            .progress-line {
+                width: 60px;
+            }
+
+            .step-circle {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .step-label {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-control-lg {
+                font-size: 1rem;
+            }
+
+            .progress-step {
+                transform: scale(0.8);
+            }
+
+            .progress-line {
+                width: 40px;
+            }
+        }
+	</style>
+
+	<!-- Form Validation Script -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('orders');
+
+            form.addEventListener('submit', function(e) {
+                if (!form.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Show validation feedback
+                    const firstInvalid = form.querySelector(':invalid');
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+
+                form.classList.add('was-validated');
+            });
+        });
+	</script>
+
+</section>
+</body>
+</html>

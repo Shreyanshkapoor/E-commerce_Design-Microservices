@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{base::layout(~{::section})}">
+<head>
+	<meta charset="UTF-8">
+	<title>Add Product</title>
+</head>
+<body>
+<section>
+	<div class="container-fluid mt-4 px-3 px-md-5 py-4">
+
+		<!-- Page Header -->
+		<div class="row mb-4">
+			<div class="col-12">
+				<div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+					<div>
+						<h2 class="fw-bold mb-2">
+							<i class="fas fa-plus-circle text-primary me-2"></i>Add New Product
+						</h2>
+						<p class="text-muted mb-0">Create and add a new product to your inventory</p>
+					</div>
+					<div>
+						<a href="/admin/products" class="btn btn-outline-secondary rounded-pill px-4">
+							<i class="fas fa-arrow-left me-2"></i>Back to Products
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
+
+				<!-- Add Product Card -->
+				<div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+					<!-- Card Header with Gradient -->
+					<div class="card-header text-white py-4 border-0"
+						 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+						<h5 class="mb-0 fw-bold text-center">
+							<i class="fas fa-box-open me-2"></i>Product Details
+						</h5>
+					</div>
+
+					<div class="card-body p-4 p-md-5">
+
+						<!-- Success/Error Messages -->
+						<th:block th:if="${session.succMsg}">
+							<div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4" role="alert">
+								<div class="d-flex align-items-center">
+									<i class="fas fa-check-circle fs-4 me-3"></i>
+									<div>
+										<strong>Success!</strong>
+										<p class="mb-0">[[${session.succMsg}]]</p>
+									</div>
+								</div>
+								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								<th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+							</div>
+						</th:block>
+
+						<th:block th:if="${session.errorMsg}">
+							<div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4" role="alert">
+								<div class="d-flex align-items-center">
+									<i class="fas fa-exclamation-circle fs-4 me-3"></i>
+									<div>
+										<strong>Error!</strong>
+										<p class="mb-0">[[${session.errorMsg}]]</p>
+									</div>
+								</div>
+								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								<th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+							</div>
+						</th:block>
+
+						<!-- Product Form -->
+						<form action="/admin/saveProduct" method="post" enctype="multipart/form-data">
+
+							<!-- Product Title -->
+							<div class="mb-4">
+								<label class="form-label fw-semibold text-muted">
+									<i class="fas fa-heading text-primary me-2"></i>Product Title
+								</label>
+								<input type="text"
+									   name="title"
+									   class="form-control form-control-lg rounded-3 border-2"
+									   placeholder="Enter product title"
+									   required>
+							</div>
+
+							<!-- Product Description -->
+							<div class="mb-4">
+								<label class="form-label fw-semibold text-muted">
+									<i class="fas fa-align-left text-info me-2"></i>Product Description
+								</label>
+								<textarea rows="4"
+										  class="form-control form-control-lg rounded-3 border-2"
+										  name="description"
+										  placeholder="Enter detailed product description"
+										  required></textarea>
+							</div>
+
+							<!-- Category -->
+							<div class="mb-4">
+								<label class="form-label fw-semibold text-muted">
+									<i class="fas fa-folder text-warning me-2"></i>Category
+								</label>
+								<select class="form-select form-select-lg rounded-3 border-2" name="category" required>
+									<option value="" selected disabled>-- Select Category --</option>
+									<option th:each="c:${categories}">[[${c.name}]]</option>
+								</select>
+							</div>
+
+							<!-- Price -->
+							<div class="mb-4">
+								<label class="form-label fw-semibold text-muted">
+									<i class="fas fa-rupee-sign text-success me-2"></i>Price
+								</label>
+								<div class="input-group input-group-lg">
+                                        <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                            <i class="fas fa-rupee-sign text-muted"></i>
+                                        </span>
+									<input type="number"
+										   name="price"
+										   class="form-control border-start-0 rounded-end-3"
+										   placeholder="0.00"
+										   step="0.01"
+										   min="0"
+										   required>
+								</div>
+							</div>
+
+							<!-- Status Section -->
+							<div class="mb-4">
+								<label class="form-label fw-semibold text-muted d-block mb-3">
+									<i class="fas fa-toggle-on text-primary me-2"></i>Product Status
+								</label>
+								<div class="d-flex gap-4">
+									<div class="form-check form-check-lg">
+										<input class="form-check-input"
+											   type="radio"
+											   checked
+											   value="true"
+											   name="isActive"
+											   id="statusActive">
+										<label class="form-check-label fw-semibold" for="statusActive">
+                                                <span class="badge bg-success bg-gradient px-3 py-2">
+                                                    <i class="fas fa-check-circle me-1"></i>Active
+                                                </span>
+										</label>
+									</div>
+									<div class="form-check form-check-lg">
+										<input class="form-check-input"
+											   type="radio"
+											   name="isActive"
+											   value="false"
+											   id="statusInactive">
+										<label class="form-check-label fw-semibold" for="statusInactive">
+                                                <span class="badge bg-secondary bg-gradient px-3 py-2">
+                                                    <i class="fas fa-times-circle me-1"></i>Inactive
+                                                </span>
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<!-- Stock and Image Row -->
+							<div class="row g-3 mb-4">
+								<!-- Stock -->
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-boxes text-purple me-2"></i>Stock Quantity
+									</label>
+									<div class="input-group input-group-lg">
+                                            <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                                <i class="fas fa-cubes text-muted"></i>
+                                            </span>
+										<input type="number"
+											   name="stock"
+											   class="form-control border-start-0 rounded-end-3"
+											   placeholder="0"
+											   min="0"
+											   required>
+									</div>
+								</div>
+
+								<!-- Image Upload -->
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-image text-indigo me-2"></i>Product Image
+									</label>
+									<input type="file"
+										   name="file"
+										   class="form-control form-control-lg rounded-3 border-2"
+										   accept="image/*"
+										   id="productImageInput"
+										   required>
+								</div>
+							</div>
+
+							<!-- Image Size Info -->
+							<div class="alert alert-info border-0 rounded-3 mb-4">
+								<div class="d-flex align-items-start">
+									<i class="fas fa-info-circle fs-5 me-3 mt-1"></i>
+									<div class="small">
+										<strong>Image Guidelines:</strong>
+										<ul class="mb-0 mt-2 ps-3">
+											<li>Recommended size: 800x800px</li>
+											<li>Supported formats: JPG, PNG, GIF</li>
+											<li>Maximum file size: 5MB</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+							<!-- Image Preview -->
+							<div class="mb-4" id="imagePreviewContainer" style="display: none;">
+								<label class="form-label fw-semibold text-muted d-block mb-3">
+									<i class="fas fa-eye text-info me-2"></i>Image Preview
+								</label>
+								<div class="text-center p-4 bg-light rounded-3 border border-2 border-dashed">
+									<img id="imagePreview"
+										 class="rounded-3 shadow-sm"
+										 style="max-width: 100%; max-height: 300px; object-fit: cover;"
+										 alt="Preview">
+								</div>
+							</div>
+
+							<!-- Action Buttons -->
+							<div class="d-flex gap-3 mt-5">
+								<button type="submit" class="btn btn-primary btn-lg flex-fill rounded-3 shadow-sm">
+									<i class="fas fa-plus-circle me-2"></i>Add Product
+								</button>
+								<button type="reset" class="btn btn-outline-secondary btn-lg rounded-3" style="min-width: 120px;">
+									<i class="fas fa-redo me-2"></i>Reset
+								</button>
+							</div>
+
+						</form>
+
+					</div>
+				</div>
+
+				<!-- Quick Tips Card -->
+				<div class="card border-0 shadow-sm rounded-3 mt-4">
+					<div class="card-body p-4">
+						<h6 class="fw-bold mb-3">
+							<i class="fas fa-lightbulb text-warning me-2"></i>Quick Tips
+						</h6>
+						<ul class="mb-0 text-muted small">
+							<li class="mb-2">Use clear, descriptive titles for better searchability</li>
+							<li class="mb-2">Add detailed descriptions to help customers make informed decisions</li>
+							<li class="mb-2">High-quality images increase product appeal and sales</li>
+							<li class="mb-2">Keep stock levels updated to avoid overselling</li>
+							<li>Set competitive prices based on market research</li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Custom Styles -->
+	<style>
+		.form-control:focus,
+        .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .rounded-4 {
+            border-radius: 1rem !important;
+        }
+
+        .text-purple {
+            color: #764ba2;
+        }
+
+        .text-indigo {
+            color: #667eea;
+        }
+
+        .form-check-input:checked {
+            background-color: #667eea;
+            border-color: #667eea;
+        }
+
+        .form-check-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+        }
+
+        .form-check-lg .form-check-input {
+            width: 1.5em;
+            height: 1.5em;
+            margin-top: 0.125em;
+            cursor: pointer;
+        }
+
+        .form-check-lg .form-check-label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .input-group:focus-within .input-group-text {
+            border-color: #667eea;
+            background-color: #f8f9ff;
+        }
+
+        .border-dashed {
+            border-style: dashed !important;
+        }
+
+        .card {
+            transition: all 0.3s ease;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        @media (max-width: 768px) {
+            .form-control-lg,
+            .form-select-lg {
+                font-size: 1rem;
+            }
+
+            .d-flex.gap-4 {
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+        }
+	</style>
+
+	<!-- Image Preview Script -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+            // Image preview functionality
+            const imageInput = document.getElementById('productImageInput');
+            const imagePreview = document.getElementById('imagePreview');
+            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+
+            imageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Check file size (5MB max)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('File size should not exceed 5MB');
+                        imageInput.value = '';
+                        imagePreviewContainer.style.display = 'none';
+                        return;
+                    }
+
+                    // Check file type
+                    if (!file.type.startsWith('image/')) {
+                        alert('Please select a valid image file');
+                        imageInput.value = '';
+                        imagePreviewContainer.style.display = 'none';
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        imagePreview.src = event.target.result;
+                        imagePreviewContainer.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreviewContainer.style.display = 'none';
+                }
+            });
+
+            // Reset button handler
+            document.querySelector('button[type="reset"]').addEventListener('click', function() {
+                imagePreviewContainer.style.display = 'none';
+            });
+        });
+	</script>
+
+</section>
+</body>
+</html>

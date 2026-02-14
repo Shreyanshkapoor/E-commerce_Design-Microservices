@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{base::layout(~{::section})}">
+<head>
+	<meta charset="UTF-8">
+	<title>User Management</title>
+</head>
+<body>
+<section>
+	<!-- Modern Header with Gradient -->
+	<div class="container-fluid mt-4 px-3 px-md-5 py-4">
+
+		<!-- Page Header -->
+		<div class="row mb-4">
+			<div class="col-12">
+				<div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+					<div>
+						<h2 class="fw-bold mb-1" th:if="${userType==1}">
+							<i class="fas fa-users text-primary me-2"></i>User Management
+						</h2>
+						<h2 class="fw-bold mb-1" th:if="${userType==2}">
+							<i class="fas fa-user-shield text-primary me-2"></i>Admin Management
+						</h2>
+						<p class="text-muted mb-0">
+							<span th:if="${userType==1}">Manage and monitor all registered users</span>
+							<span th:if="${userType==2}">Manage and monitor all administrators</span>
+						</p>
+					</div>
+					<div>
+                            <span class="badge bg-primary bg-gradient px-3 py-2 fs-6">
+                                <i class="fas fa-user-check me-1"></i>
+                                Total: <span th:text="${users.size()}">0</span>
+                            </span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modern Card with Shadow -->
+		<div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+			<!-- Card Header with Gradient Background -->
+			<div class="card-header bg-gradient text-white py-4 border-0"
+				 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+				<div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+					<div>
+						<h5 class="mb-0 fw-bold">
+							<i class="fas fa-list-ul me-2"></i>
+							<span th:if="${userType==1}">User List</span>
+							<span th:if="${userType==2}">Admin List</span>
+						</h5>
+					</div>
+					<div>
+						<button class="btn btn-light btn-sm rounded-pill px-3">
+							<i class="fas fa-download me-1"></i> Export
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Success/Error Messages -->
+			<div class="card-body p-0">
+				<th:block th:if="${session.succMsg}">
+					<div class="alert alert-success alert-dismissible fade show m-4 mb-0 border-0 shadow-sm rounded-3" role="alert">
+						<div class="d-flex align-items-center">
+							<i class="fas fa-check-circle fs-4 me-3"></i>
+							<div>
+								<strong>Success!</strong>
+								<p class="mb-0">[[${session.succMsg}]]</p>
+							</div>
+						</div>
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						<th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+					</div>
+				</th:block>
+
+				<th:block th:if="${session.errorMsg}">
+					<div class="alert alert-danger alert-dismissible fade show m-4 mb-0 border-0 shadow-sm rounded-3" role="alert">
+						<div class="d-flex align-items-center">
+							<i class="fas fa-exclamation-circle fs-4 me-3"></i>
+							<div>
+								<strong>Error!</strong>
+								<p class="mb-0">[[${session.errorMsg}]]</p>
+							</div>
+						</div>
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						<th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+					</div>
+				</th:block>
+			</div>
+
+			<!-- Table with Modern Design -->
+			<div class="card-body p-0">
+				<div class="table-responsive">
+					<table class="table table-hover align-middle mb-0">
+						<thead class="bg-light">
+						<tr>
+							<th scope="col" class="py-3 px-4 fw-semibold text-muted">
+								<i class="fas fa-hashtag me-2"></i>Sl No
+							</th>
+							<th scope="col" class="py-3 px-4 fw-semibold text-muted">
+								<i class="fas fa-image me-2"></i>Profile
+							</th>
+							<th scope="col" class="py-3 px-4 fw-semibold text-muted">
+								<i class="fas fa-user me-2"></i>Name
+							</th>
+							<th scope="col" class="py-3 px-4 fw-semibold text-muted">
+								<i class="fas fa-envelope me-2"></i>Email
+							</th>
+							<th scope="col" class="py-3 px-4 fw-semibold text-muted">
+								<i class="fas fa-phone me-2"></i>Mobile No
+							</th>
+							<th scope="col" class="py-3 px-4 fw-semibold text-muted">
+								<i class="fas fa-map-marker-alt me-2"></i>Address
+							</th>
+							<th scope="col" class="py-3 px-4 fw-semibold text-muted text-center">
+								<i class="fas fa-toggle-on me-2"></i>Status
+							</th>
+							<th scope="col" class="py-3 px-4 fw-semibold text-muted text-center">
+								<i class="fas fa-cog me-2"></i>Action
+							</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr th:each="u,c:${users}" class="border-bottom transition-all">
+							<th scope="row" class="py-3 px-4 fw-semibold text-primary">
+								[[${c.count}]]
+							</th>
+							<td class="py-3 px-4">
+								<div class="position-relative d-inline-block">
+									<img th:src="@{'/img/profile_img/'+${u.profileImage}}"
+										 class="rounded-circle border border-3 border-white shadow-sm object-fit-cover"
+										 width="60"
+										 height="60"
+										 alt="Profile Image"
+										 style="object-fit: cover;">
+									<span class="position-absolute bottom-0 end-0 p-1 bg-success border border-2 border-white rounded-circle"
+										  th:if="${u.isEnable}"
+										  style="width: 15px; height: 15px;">
+                                            </span>
+								</div>
+							</td>
+							<td class="py-3 px-4">
+								<div class="fw-semibold text-dark">[[${u.name}]]</div>
+							</td>
+							<td class="py-3 px-4">
+								<div class="text-muted">
+									<i class="fas fa-envelope text-primary me-2"></i>
+									[[${u.email}]]
+								</div>
+							</td>
+							<td class="py-3 px-4">
+								<div class="text-muted">
+									<i class="fas fa-phone-alt text-success me-2"></i>
+									[[${u.mobileNumber}]]
+								</div>
+							</td>
+							<td class="py-3 px-4">
+								<div class="text-muted small" style="max-width: 200px;">
+									<i class="fas fa-map-marker-alt text-danger me-2"></i>
+									[[${u.address+', '+u.city+', '+u.state+', '+u.pincode}]]
+								</div>
+							</td>
+							<td class="py-3 px-4 text-center">
+                                        <span th:if="${u.isEnable}"
+											  class="badge bg-success bg-gradient px-3 py-2 rounded-pill">
+                                            <i class="fas fa-check-circle me-1"></i>Active
+                                        </span>
+								<span th:unless="${u.isEnable}"
+									  class="badge bg-danger bg-gradient px-3 py-2 rounded-pill">
+                                            <i class="fas fa-times-circle me-1"></i>Inactive
+                                        </span>
+							</td>
+							<td class="py-3 px-4 text-center">
+								<div class="btn-group shadow-sm" role="group">
+									<a th:href="@{'/admin/updateSts?status=true&id='+${u.id}+'&type='+${userType}}"
+									   class="btn btn-sm btn-success rounded-start"
+									   data-bs-toggle="tooltip"
+									   title="Activate User">
+										<i class="fas fa-check me-1"></i>Active
+									</a>
+									<a th:href="@{'/admin/updateSts?status=false&id='+${u.id}+'&type='+${userType}}"
+									   class="btn btn-sm btn-danger rounded-end"
+									   data-bs-toggle="tooltip"
+									   title="Deactivate User">
+										<i class="fas fa-times me-1"></i>Inactive
+									</a>
+								</div>
+							</td>
+						</tr>
+
+						<!-- Empty State -->
+						<tr th:if="${users.isEmpty()}">
+							<td colspan="8" class="text-center py-5">
+								<div class="py-5">
+									<i class="fas fa-users text-muted mb-3" style="font-size: 4rem; opacity: 0.3;"></i>
+									<h5 class="text-muted">No users found</h5>
+									<p class="text-muted mb-0">There are currently no users in the system.</p>
+								</div>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- Card Footer -->
+			<div class="card-footer bg-light border-0 py-3">
+				<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+					<div class="text-muted small">
+						<i class="fas fa-info-circle me-1"></i>
+						Showing <span class="fw-bold" th:text="${users.size()}">0</span>
+						<span th:if="${userType==1}">users</span>
+						<span th:if="${userType==2}">admins</span>
+					</div>
+					<div>
+						<button class="btn btn-sm btn-outline-primary rounded-pill">
+							<i class="fas fa-sync-alt me-1"></i> Refresh
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Add Custom Styles -->
+	<style>
+		.card-sh {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9ff;
+            transform: scale(1.01);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-group .btn {
+            transition: all 0.3s ease;
+        }
+
+        .btn-group .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .rounded-4 {
+            border-radius: 1rem !important;
+        }
+
+        .bg-gradient {
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        @media (max-width: 768px) {
+            .table {
+                font-size: 0.875rem;
+            }
+
+            .btn-sm {
+                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
+	</style>
+
+	<!-- Initialize Tooltips -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+	</script>
+
+</section>
+</body>
+</html>

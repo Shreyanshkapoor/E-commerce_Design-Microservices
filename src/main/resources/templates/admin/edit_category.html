@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{base::layout(~{::section})}">
+<head>
+	<meta charset="UTF-8">
+	<title>Edit Category</title>
+</head>
+<body>
+<section>
+	<div class="container-fluid mt-4 px-3 px-md-5 py-4">
+
+		<!-- Page Header -->
+		<div class="row mb-4">
+			<div class="col-12">
+				<div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+					<div>
+						<h2 class="fw-bold mb-2">
+							<i class="fas fa-folder-open text-primary me-2"></i>Edit Category
+						</h2>
+						<p class="text-muted mb-0">Update category information and settings</p>
+					</div>
+					<div>
+						<a href="/admin/category" class="btn btn-outline-secondary rounded-pill px-4">
+							<i class="fas fa-arrow-left me-2"></i>Back to Categories
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row justify-content-center">
+			<div class="col-lg-6 col-xl-5">
+
+				<!-- Edit Category Card -->
+				<div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+					<!-- Card Header with Gradient -->
+					<div class="card-header text-white py-4 border-0"
+						 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+						<h5 class="mb-0 fw-bold text-center">
+							<i class="fas fa-edit me-2"></i>Category Details
+						</h5>
+					</div>
+
+					<div class="card-body p-4 p-md-5">
+
+						<!-- Success/Error Messages -->
+						<th:block th:if="${session.succMsg}">
+							<div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4" role="alert">
+								<div class="d-flex align-items-center">
+									<i class="fas fa-check-circle fs-4 me-3"></i>
+									<div>
+										<strong>Success!</strong>
+										<p class="mb-0">[[${session.succMsg}]]</p>
+									</div>
+								</div>
+								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								<th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+							</div>
+						</th:block>
+
+						<th:block th:if="${session.errorMsg}">
+							<div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4" role="alert">
+								<div class="d-flex align-items-center">
+									<i class="fas fa-exclamation-circle fs-4 me-3"></i>
+									<div>
+										<strong>Error!</strong>
+										<p class="mb-0">[[${session.errorMsg}]]</p>
+									</div>
+								</div>
+								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								<th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+							</div>
+						</th:block>
+
+						<!-- Category Form -->
+						<form action="/admin/updateCategory" method="post" enctype="multipart/form-data">
+							<input type="hidden" name="id" th:value="${category.id}">
+
+							<!-- Category Name -->
+							<div class="mb-4">
+								<label class="form-label fw-semibold text-muted">
+									<i class="fas fa-tag text-primary me-2"></i>Category Name
+								</label>
+								<input type="text"
+									   name="name"
+									   th:value="${category.name}"
+									   class="form-control form-control-lg rounded-3 border-2"
+									   placeholder="Enter category name"
+									   required>
+							</div>
+
+							<!-- Status Section -->
+							<div class="mb-4">
+								<label class="form-label fw-semibold text-muted d-block mb-3">
+									<i class="fas fa-toggle-on text-success me-2"></i>Category Status
+								</label>
+								<div class="d-flex gap-3 flex-wrap">
+									<div class="form-check form-check-lg">
+										<input class="form-check-input"
+											   type="radio"
+											   th:checked="${category.isActive==true}"
+											   value="true"
+											   name="isActive"
+											   id="statusActive">
+										<label class="form-check-label fw-semibold" for="statusActive">
+                                                <span class="badge bg-success bg-gradient px-4 py-2 fs-6">
+                                                    <i class="fas fa-check-circle me-2"></i>Active
+                                                </span>
+										</label>
+									</div>
+									<div class="form-check form-check-lg">
+										<input class="form-check-input"
+											   type="radio"
+											   name="isActive"
+											   th:checked="${category.isActive==false}"
+											   value="false"
+											   id="statusInactive">
+										<label class="form-check-label fw-semibold" for="statusInactive">
+                                                <span class="badge bg-secondary bg-gradient px-4 py-2 fs-6">
+                                                    <i class="fas fa-times-circle me-2"></i>Inactive
+                                                </span>
+										</label>
+									</div>
+								</div>
+								<small class="text-muted d-block mt-2">
+									<i class="fas fa-info-circle me-1"></i>Active categories are visible to customers
+								</small>
+							</div>
+
+							<!-- Current Image Preview -->
+							<div class="mb-4">
+								<label class="form-label fw-semibold text-muted d-block mb-3">
+									<i class="fas fa-eye text-info me-2"></i>Current Category Image
+								</label>
+								<div class="text-center p-4 bg-light rounded-3 border border-2 border-dashed position-relative">
+									<img th:src="@{'/img/category_img/'+${category.imageName}}"
+										 id="categoryImagePreview"
+										 class="rounded-3 shadow-sm border border-3 border-white"
+										 style="max-width: 180px; max-height: 180px; object-fit: cover;"
+										 alt="Category Image">
+									<div class="position-absolute top-0 end-0 m-2">
+                                            <span class="badge bg-primary bg-gradient">
+                                                <i class="fas fa-image me-1"></i>Current
+                                            </span>
+									</div>
+								</div>
+							</div>
+
+							<!-- Image Upload -->
+							<div class="mb-4">
+								<label class="form-label fw-semibold text-muted">
+									<i class="fas fa-cloud-upload-alt text-purple me-2"></i>Upload New Image
+								</label>
+								<input type="file"
+									   name="file"
+									   id="imageInput"
+									   class="form-control form-control-lg rounded-3 border-2"
+									   accept="image/*">
+								<small class="text-muted d-block mt-2">
+									<i class="fas fa-info-circle me-1"></i>Supported: JPG, PNG, GIF (Max 5MB). Leave empty to keep current image.
+								</small>
+							</div>
+
+							<!-- Action Buttons -->
+							<div class="d-grid gap-3 mt-5">
+								<button type="submit" class="btn btn-primary btn-lg rounded-3 shadow-sm">
+									<i class="fas fa-save me-2"></i>Update Category
+								</button>
+								<a href="/admin/category" class="btn btn-outline-secondary btn-lg rounded-3">
+									<i class="fas fa-times me-2"></i>Cancel
+								</a>
+							</div>
+
+						</form>
+
+					</div>
+
+					<!-- Card Footer Info -->
+					<div class="card-footer bg-light border-0 py-3">
+						<div class="d-flex align-items-center justify-content-center gap-2 text-muted small">
+							<i class="fas fa-shield-alt text-primary"></i>
+							<span>Changes will be saved securely</span>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Help Card -->
+				<div class="card border-0 shadow-sm rounded-3 mt-4">
+					<div class="card-body p-4">
+						<h6 class="fw-bold mb-3">
+							<i class="fas fa-lightbulb text-warning me-2"></i>Quick Tips
+						</h6>
+						<ul class="mb-0 small text-muted ps-3">
+							<li class="mb-2">Choose a clear, descriptive name for your category</li>
+							<li class="mb-2">Use high-quality images for better visual appeal</li>
+							<li class="mb-2">Inactive categories won't appear on the storefront</li>
+							<li>Image dimensions: Recommended 500x500px or higher</li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Custom Styles -->
+	<style>
+		.form-control:focus,
+        .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-outline-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .rounded-4 {
+            border-radius: 1rem !important;
+        }
+
+        .text-purple {
+            color: #764ba2;
+        }
+
+        .form-check-input:checked {
+            background-color: #667eea;
+            border-color: #667eea;
+        }
+
+        .form-check-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+        }
+
+        .form-check-lg .form-check-input {
+            width: 1.5em;
+            height: 1.5em;
+            margin-top: 0.25em;
+            cursor: pointer;
+        }
+
+        .form-check-lg .form-check-label {
+            cursor: pointer;
+            user-select: none;
+            padding-left: 0.5rem;
+        }
+
+        .border-dashed {
+            border-style: dashed !important;
+        }
+
+        .card {
+            transition: all 0.3s ease;
+        }
+
+        #categoryImagePreview {
+            transition: all 0.3s ease;
+        }
+
+        #categoryImagePreview:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .form-control-lg {
+                font-size: 1rem;
+            }
+
+            .d-flex.gap-3 {
+                gap: 1rem !important;
+            }
+        }
+	</style>
+
+	<!-- Image Preview Script -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+            const imageInput = document.getElementById('imageInput');
+            const imagePreview = document.getElementById('categoryImagePreview');
+            const originalSrc = imagePreview.src;
+
+            // Preview image before upload
+            imageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Validate file type
+                    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                    if (!validTypes.includes(file.type)) {
+                        alert('Please select a valid image file (JPG, PNG, GIF, or WebP)');
+                        imageInput.value = '';
+                        imagePreview.src = originalSrc;
+                        return;
+                    }
+
+                    // Validate file size (5MB max)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('Image size should not exceed 5MB');
+                        imageInput.value = '';
+                        imagePreview.src = originalSrc;
+                        return;
+                    }
+
+                    // Show preview
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        imagePreview.src = event.target.result;
+
+                        // Add animation
+                        imagePreview.style.opacity = '0';
+                        setTimeout(() => {
+                            imagePreview.style.transition = 'opacity 0.3s ease';
+                            imagePreview.style.opacity = '1';
+                        }, 100);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreview.src = originalSrc;
+                }
+            });
+
+            // Form validation
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(e) {
+                const categoryName = document.querySelector('input[name="name"]').value.trim();
+
+                if (categoryName.length < 2) {
+                    e.preventDefault();
+                    alert('Category name must be at least 2 characters long');
+                    return false;
+                }
+
+                if (categoryName.length > 50) {
+                    e.preventDefault();
+                    alert('Category name must not exceed 50 characters');
+                    return false;
+                }
+            });
+        });
+	</script>
+
+</section>
+</body>
+</html>

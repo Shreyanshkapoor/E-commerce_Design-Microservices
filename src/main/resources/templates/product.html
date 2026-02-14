@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{base::layout(~{::section})}">
+<head>
+	<meta charset="UTF-8">
+	<title>Products - E-Commerce Store</title>
+</head>
+<body>
+<section>
+
+	<!-- Search Section -->
+	<div class="search-section py-4">
+		<div class="container-fluid px-3 px-md-5">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2">
+					<form action="/products" method="get">
+						<div class="search-box">
+							<i class="fas fa-search search-icon"></i>
+							<input type="text"
+								   class="form-control search-input"
+								   name="ch"
+								   placeholder="Search for products, brands, and more...">
+							<button class="btn btn-search" type="submit">
+								<i class="fas fa-search me-2"></i>Search
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Main Content -->
+	<div class="container-fluid px-3 px-md-5 py-4">
+		<div class="row g-4">
+
+			<!-- Sidebar - Categories -->
+			<div class="col-lg-3 col-md-4">
+				<div class="sidebar-sticky">
+					<div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+						<!-- Category Header -->
+						<div class="card-header text-white py-3 border-0"
+							 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+							<h5 class="mb-0 fw-bold">
+								<i class="fas fa-filter me-2"></i>Categories
+							</h5>
+						</div>
+
+						<!-- Category List -->
+						<div class="card-body p-0">
+							<div class="category-list">
+								<!-- All Products -->
+								<a href="/products"
+								   th:classappend="${paramValue==''} ? 'active':''"
+								   class="category-item">
+									<div class="category-icon">
+										<i class="fas fa-th-large"></i>
+									</div>
+									<span class="category-name">All Products</span>
+									<i class="fas fa-chevron-right category-arrow"></i>
+								</a>
+
+								<!-- Dynamic Categories -->
+								<a th:each="c:${categories}"
+								   th:href="@{'/products?category='+${c.name}}"
+								   th:classappend="${paramValue == c.name} ? 'active':''"
+								   class="category-item">
+									<div class="category-icon">
+										<i class="fas fa-box"></i>
+									</div>
+									<span class="category-name">[[${c.name}]]</span>
+									<i class="fas fa-chevron-right category-arrow"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<!-- Filter Info Card -->
+					<div class="card border-0 shadow-sm rounded-3 mt-3">
+						<div class="card-body p-3">
+							<div class="d-flex align-items-center gap-2">
+								<i class="fas fa-info-circle text-primary"></i>
+								<small class="text-muted">
+									Showing <strong th:text="${productsSize}">0</strong> of
+									<strong th:text="${totalElements}">0</strong> products
+								</small>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Products Grid -->
+			<div class="col-lg-9 col-md-8">
+
+				<!-- Products Header -->
+				<div class="products-header mb-4">
+					<div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+						<div>
+							<h3 class="fw-bold mb-1">
+								<span th:if="${paramValue != ''}" th:text="${paramValue}">Category</span>
+								<span th:if="${paramValue == ''}">All Products</span>
+							</h3>
+							<p class="text-muted mb-0">
+								<i class="fas fa-box me-1"></i>
+								<span th:text="${totalElements}">0</span> products available
+							</p>
+						</div>
+						<div class="sort-options">
+							<button class="btn btn-outline-secondary btn-sm rounded-pill">
+								<i class="fas fa-sort me-1"></i>Sort By
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Products Grid -->
+				<th:block th:if="${productsSize > 0}">
+					<div class="row g-4">
+						<div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" th:each="p:${products}">
+							<div class="product-card">
+
+								<!-- Product Image -->
+								<div class="product-image-wrapper">
+									<img th:src="@{'/img/product_img/'+${p.image}}"
+										 class="product-image"
+										 alt="Product Image">
+
+									<!-- Discount Badge -->
+									<div class="discount-badge" th:if="${p.discount > 0}">
+										<span>[[${p.discount}]]% OFF</span>
+									</div>
+
+									<!-- Wishlist Button -->
+									<button class="wishlist-btn">
+										<i class="far fa-heart"></i>
+									</button>
+								</div>
+
+								<!-- Product Info -->
+								<div class="product-info">
+									<h6 class="product-title">
+										[[${p.title}]]
+									</h6>
+
+									<!-- Price Section -->
+									<div class="price-section">
+										<div class="current-price">
+											<th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block>[[${p.discountPrice}]]
+										</div>
+										<div class="original-price" th:if="${p.discount > 0}">
+											<th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block>[[${p.price}]]
+										</div>
+									</div>
+
+									<!-- Savings -->
+									<div class="savings-text" th:if="${p.discount > 0}">
+										<i class="fas fa-tag me-1"></i>
+										Save <th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block>[[${p.price - p.discountPrice}]]
+									</div>
+
+									<!-- Rating -->
+									<div class="rating-section">
+										<div class="stars">
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star-half-alt"></i>
+										</div>
+										<span class="rating-count">(4.5)</span>
+									</div>
+
+									<!-- View Details Button -->
+									<a th:href="@{'/product/'+${p.id}}"
+									   class="btn btn-primary btn-view-details">
+										<i class="fas fa-eye me-2"></i>View Details
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</th:block>
+
+				<!-- Empty State -->
+				<th:block th:unless="${productsSize > 0}">
+					<div class="empty-state">
+						<i class="fas fa-box-open"></i>
+						<h4 class="mt-4 mb-2">No Products Found</h4>
+						<p class="text-muted mb-4">We couldn't find any products matching your criteria.</p>
+						<a href="/products" class="btn btn-primary rounded-pill px-4">
+							<i class="fas fa-refresh me-2"></i>View All Products
+						</a>
+					</div>
+				</th:block>
+
+				<!-- Pagination -->
+				<th:block th:if="${productsSize > 0}">
+					<div class="pagination-section mt-5">
+						<div class="row align-items-center g-3">
+							<div class="col-md-4">
+								<div class="text-muted">
+									<i class="fas fa-info-circle me-1"></i>
+									Showing <strong th:text="${productsSize}">0</strong> of
+									<strong th:text="${totalElements}">0</strong> products
+								</div>
+							</div>
+							<div class="col-md-8">
+								<nav aria-label="Product pagination">
+									<ul class="pagination pagination-modern justify-content-end mb-0">
+										<li class="page-item" th:classappend="${isFirst} ? 'disabled':''">
+											<a class="page-link"
+											   th:href="@{'/products?pageNo='+${pageNo-1}}"
+											   aria-label="Previous">
+												<i class="fas fa-chevron-left"></i>
+												<span class="d-none d-md-inline ms-2">Previous</span>
+											</a>
+										</li>
+
+										<li th:each="i:${#numbers.sequence(1,totalPages)}"
+											class="page-item"
+											th:classappend="${pageNo+1==i}?'active':''">
+											<a class="page-link"
+											   th:href="@{'/products?pageNo='+${i-1}}">[[${i}]]</a>
+										</li>
+
+										<li class="page-item" th:classappend="${isLast} ? 'disabled':''">
+											<a class="page-link"
+											   th:href="@{'/products?pageNo='+${pageNo+1}}"
+											   aria-label="Next">
+												<span class="d-none d-md-inline me-2">Next</span>
+												<i class="fas fa-chevron-right"></i>
+											</a>
+										</li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</th:block>
+
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Custom Styles -->
+	<style>
+		/* Search Section */
+        .search-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.5rem;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .search-input {
+            border: none;
+            padding: 0.75rem 1.5rem 0.75rem 3.5rem;
+            font-size: 1rem;
+            background: transparent;
+        }
+
+        .search-input:focus {
+            box-shadow: none;
+            outline: none;
+        }
+
+        .btn-search {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .btn-search:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+
+        /* Sidebar */
+        .sidebar-sticky {
+            position: sticky;
+            top: 20px;
+        }
+
+        .category-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            color: #495057;
+            text-decoration: none;
+            border-bottom: 1px solid #f1f3f5;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .category-item:hover {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+            color: #667eea;
+            padding-left: 1.5rem;
+        }
+
+        .category-item.active {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+            color: #667eea;
+            font-weight: 600;
+            border-left: 3px solid #667eea;
+        }
+
+        .category-icon {
+            width: 35px;
+            height: 35px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-item:hover .category-icon,
+        .category-item.active .category-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .category-name {
+            flex: 1;
+        }
+
+        .category-arrow {
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .category-item:hover .category-arrow,
+        .category-item.active .category-arrow {
+            opacity: 1;
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            overflow: hidden;
+        }
+
+        .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(255, 65, 108, 0.4);
+        }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .wishlist-btn:hover {
+            background: #ff416c;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 3rem;
+        }
+
+        .price-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .original-price {
+            font-size: 1rem;
+            color: #6c757d;
+            text-decoration: line-through;
+        }
+
+        .savings-text {
+            color: #28a745;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .rating-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stars {
+            color: #ffc107;
+            font-size: 0.875rem;
+        }
+
+        .rating-count {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        .btn-view-details {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: auto;
+        }
+
+        .btn-view-details:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            color: #dee2e6;
+        }
+
+        /* Pagination */
+        .pagination-modern .page-link {
+            border: none;
+            margin: 0 0.25rem;
+            border-radius: 8px;
+            padding: 0.625rem 1rem;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-modern .page-item.active .page-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .pagination-modern .page-link:hover:not(.active) {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .pagination-modern .page-item.disabled .page-link {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar-sticky {
+                position: relative;
+            }
+
+            .search-box {
+                flex-direction: column;
+                gap: 0.5rem;
+                border-radius: 16px;
+                padding: 1rem;
+            }
+
+            .search-input {
+                padding: 0.75rem 1rem 0.75rem 3rem;
+                width: 100%;
+            }
+
+            .btn-search {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .current-price {
+                font-size: 1.25rem;
+            }
+
+            .product-info {
+                padding: 1rem;
+            }
+        }
+	</style>
+
+</section>
+</body>
+</html>

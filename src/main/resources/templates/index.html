@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{base::layout(~{::section})}">
+<head>
+	<meta charset="UTF-8">
+	<title>Home - E-Commerce Store</title>
+</head>
+<body>
+<section>
+
+	<!-- Hero Slider Section -->
+	<div class="hero-slider-wrapper">
+		<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+			<div class="carousel-indicators">
+				<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+				<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+				<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+			</div>
+
+			<div class="carousel-inner">
+				<!-- Slide 1 -->
+				<div class="carousel-item active">
+					<div class="carousel-overlay"></div>
+					<img src="img/ecom1.png" class="d-block w-100 carousel-img" alt="Banner 1">
+					<div class="carousel-caption-custom">
+						<div class="container">
+							<div class="row align-items-center">
+								<div class="col-lg-6">
+									<span class="badge bg-white text-primary px-3 py-2 mb-3">New Arrival</span>
+									<h1 class="display-3 fw-bold mb-3 animate-slide-up">Summer Collection 2024</h1>
+									<p class="lead mb-4 animate-slide-up" style="animation-delay: 0.2s;">Discover amazing deals on the latest products. Shop now and save big!</p>
+									<div class="animate-slide-up" style="animation-delay: 0.4s;">
+										<a href="/products" class="btn btn-primary btn-lg rounded-pill px-5 me-3">
+											<i class="fas fa-shopping-bag me-2"></i>Shop Now
+										</a>
+										<a href="#categories" class="btn btn-outline-light btn-lg rounded-pill px-5">
+											Explore
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Slide 2 -->
+				<div class="carousel-item">
+					<div class="carousel-overlay"></div>
+					<img src="img/ecom3.jpg" class="d-block w-100 carousel-img" alt="Banner 2">
+					<div class="carousel-caption-custom">
+						<div class="container">
+							<div class="row align-items-center">
+								<div class="col-lg-6">
+									<span class="badge bg-danger px-3 py-2 mb-3">Limited Offer</span>
+									<h1 class="display-3 fw-bold mb-3 animate-slide-up">Mega Sale Up to 50% Off</h1>
+									<p class="lead mb-4 animate-slide-up" style="animation-delay: 0.2s;">Exclusive discounts on selected items. Don't miss out!</p>
+									<div class="animate-slide-up" style="animation-delay: 0.4s;">
+										<a href="/products" class="btn btn-danger btn-lg rounded-pill px-5">
+											<i class="fas fa-gift me-2"></i>Grab Deal
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Slide 3 -->
+				<div class="carousel-item">
+					<div class="carousel-overlay"></div>
+					<img src="img/ecom2.jpg" class="d-block w-100 carousel-img" alt="Banner 3">
+					<div class="carousel-caption-custom">
+						<div class="container">
+							<div class="row align-items-center">
+								<div class="col-lg-6">
+									<span class="badge bg-success px-3 py-2 mb-3">Free Delivery</span>
+									<h1 class="display-3 fw-bold mb-3 animate-slide-up">Fast & Free Shipping</h1>
+									<p class="lead mb-4 animate-slide-up" style="animation-delay: 0.2s;">Get your orders delivered to your doorstep with no extra cost!</p>
+									<div class="animate-slide-up" style="animation-delay: 0.4s;">
+										<a href="/products" class="btn btn-success btn-lg rounded-pill px-5">
+											<i class="fas fa-truck me-2"></i>Order Now
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Navigation Arrows -->
+			<button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+					<span class="carousel-control-icon">
+						<i class="fas fa-chevron-left"></i>
+					</span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+					<span class="carousel-control-icon">
+						<i class="fas fa-chevron-right"></i>
+					</span>
+				<span class="visually-hidden">Next</span>
+			</button>
+		</div>
+	</div>
+
+	<!-- Category Section -->
+	<div class="category-section py-5" id="categories">
+		<div class="container">
+			<!-- Section Header -->
+			<div class="section-header text-center mb-5">
+				<h2 class="fw-bold mb-3">
+					<span class="text-gradient">Shop by Category</span>
+				</h2>
+				<p class="text-muted lead">Browse our wide range of product categories</p>
+				<div class="header-divider mx-auto"></div>
+			</div>
+
+			<!-- Categories Grid -->
+			<div class="row g-4 justify-content-center">
+				<div class="col-lg-2 col-md-3 col-sm-4 col-6" th:each="c:${category}">
+					<a th:href="@{'/products?category='+${c.name}}" class="category-card-link">
+						<div class="category-card">
+							<div class="category-image-wrapper">
+								<img th:src="@{'img/category_img/'+${c.imageName}}"
+									 class="category-image"
+									 alt="Category Image">
+								<div class="category-overlay">
+									<i class="fas fa-arrow-right"></i>
+								</div>
+							</div>
+							<div class="category-name">
+								<h6 class="mb-0 fw-semibold">[[${c.name}]]</h6>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+
+			<!-- View All Categories Button -->
+			<div class="text-center mt-5">
+				<a href="/products" class="btn btn-outline-primary btn-lg rounded-pill px-5">
+					<i class="fas fa-th-large me-2"></i>View All Categories
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- Latest Products Section -->
+	<div class="products-section py-5 bg-light">
+		<div class="container">
+			<!-- Section Header -->
+			<div class="section-header text-center mb-5">
+				<h2 class="fw-bold mb-3">
+					<span class="text-gradient">Latest Products</span>
+				</h2>
+				<p class="text-muted lead">Check out our newest arrivals</p>
+				<div class="header-divider mx-auto"></div>
+			</div>
+
+			<!-- Products Grid -->
+			<div class="row g-4">
+				<div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" th:each="p:${products}">
+					<div class="product-card-home">
+						<!-- Product Image -->
+						<div class="product-image-container">
+							<a th:href="@{'/product/'+${p.id}}">
+								<img th:src="@{'img/product_img/'+${p.image}}"
+									 class="product-image"
+									 alt="Product Image">
+							</a>
+							<!-- Quick View Badge -->
+							<div class="product-badge">
+								<span class="badge bg-primary">New</span>
+							</div>
+							<!-- Wishlist Button -->
+							<button class="wishlist-btn-home">
+								<i class="far fa-heart"></i>
+							</button>
+						</div>
+
+						<!-- Product Info -->
+						<div class="product-info-home">
+							<a th:href="@{'/product/'+${p.id}}" class="product-title-link">
+								<h6 class="product-title-home">[[${p.title}]]</h6>
+							</a>
+
+							<!-- Rating -->
+							<div class="product-rating">
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star-half-alt"></i>
+								<span class="rating-count">(4.5)</span>
+							</div>
+
+							<!-- View Details Button -->
+							<a th:href="@{'/product/'+${p.id}}" class="btn btn-view-home">
+								<i class="fas fa-eye me-2"></i>View Details
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- View All Products Button -->
+			<div class="text-center mt-5">
+				<a href="/products" class="btn btn-primary btn-lg rounded-pill px-5 shadow">
+					<i class="fas fa-arrow-right me-2"></i>View All Products
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- Features Section -->
+	<div class="features-section py-5">
+		<div class="container">
+			<div class="row g-4">
+				<div class="col-md-3 col-sm-6">
+					<div class="feature-box text-center">
+						<div class="feature-icon-home">
+							<i class="fas fa-shipping-fast"></i>
+						</div>
+						<h5 class="fw-bold mb-2">Free Delivery</h5>
+						<p class="text-muted small mb-0">On orders over ₹500</p>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="feature-box text-center">
+						<div class="feature-icon-home">
+							<i class="fas fa-shield-alt"></i>
+						</div>
+						<h5 class="fw-bold mb-2">Secure Payment</h5>
+						<p class="text-muted small mb-0">100% secure transactions</p>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="feature-box text-center">
+						<div class="feature-icon-home">
+							<i class="fas fa-headset"></i>
+						</div>
+						<h5 class="fw-bold mb-2">24/7 Support</h5>
+						<p class="text-muted small mb-0">Dedicated customer service</p>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="feature-box text-center">
+						<div class="feature-icon-home">
+							<i class="fas fa-redo-alt"></i>
+						</div>
+						<h5 class="fw-bold mb-2">Easy Returns</h5>
+						<p class="text-muted small mb-0">7-day return policy</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Custom Styles -->
+	<style>
+		/* Hero Slider */
+        .hero-slider-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-img {
+            height: 600px;
+            object-fit: cover;
+        }
+
+        .carousel-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 100%);
+        }
+
+        .carousel-caption-custom {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            z-index: 10;
+            text-align: left;
+        }
+
+        .carousel-caption-custom h1,
+        .carousel-caption-custom p {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .carousel-control-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-control-prev:hover .carousel-control-icon,
+        .carousel-control-next:hover .carousel-control-icon {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .carousel-indicators button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin: 0 5px;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.8s ease-out both;
+        }
+
+        /* Section Headers */
+        .section-header h2 {
+            font-size: 2.5rem;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+            margin-top: 1rem;
+        }
+
+        /* Category Cards */
+        .category-card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .category-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-card:hover .category-image {
+            transform: scale(1.15);
+        }
+
+        .category-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .category-overlay i {
+            color: white;
+            font-size: 2rem;
+        }
+
+        .category-card:hover .category-overlay {
+            opacity: 1;
+        }
+
+        .category-name h6 {
+            font-size: 1rem;
+            color: #212529;
+            transition: color 0.3s ease;
+        }
+
+        .category-card:hover .category-name h6 {
+            color: #667eea;
+        }
+
+        /* Product Cards */
+        .product-card-home {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card-home:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            overflow: hidden;
+        }
+
+        .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card-home:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 1;
+        }
+
+        .wishlist-btn-home {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .wishlist-btn-home:hover {
+            background: #ff416c;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .product-info-home {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .product-title-home {
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 3rem;
+            transition: color 0.3s ease;
+        }
+
+        .product-title-link:hover .product-title-home {
+            color: #667eea;
+        }
+
+        .product-rating {
+            color: #ffc107;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .rating-count {
+            color: #6c757d;
+            margin-left: 0.25rem;
+        }
+
+        .btn-view-home {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: auto;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-view-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+
+        /* Features Section */
+        .feature-box {
+            padding: 2rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-8px);
+        }
+
+        .feature-icon-home {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid #667eea;
+            color: #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 992px) {
+            .carousel-img {
+                height: 400px;
+            }
+
+            .carousel-caption-custom h1 {
+                font-size: 2rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .carousel-img {
+                height: 300px;
+            }
+
+            .carousel-caption-custom {
+                padding: 1rem;
+            }
+
+            .carousel-caption-custom h1 {
+                font-size: 1.5rem;
+            }
+
+            .carousel-caption-custom p {
+                font-size: 0.875rem;
+            }
+        }
+	</style>
+
+</section>
+</body>
+</html>

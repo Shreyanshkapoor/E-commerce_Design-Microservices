@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{base::layout(~{::section})}">
+<head>
+	<meta charset="UTF-8">
+	<title>Admin Dashboard</title>
+</head>
+<body>
+<section>
+	<div class="container-fluid px-3 px-md-5 py-4">
+
+		<!-- Dashboard Header -->
+		<div class="row mb-5">
+			<div class="col-12 text-center">
+				<div class="dashboard-header py-4">
+					<h1 class="fw-bold mb-3">
+						<i class="fas fa-tachometer-alt text-primary me-3"></i>
+						<span class="dashboard-title">Admin Dashboard</span>
+					</h1>
+					<p class="text-muted fs-5 mb-0">
+						Welcome back! Manage your e-commerce platform from here
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Quick Stats Cards (Optional - can show statistics) -->
+		<div class="row mb-4 g-4">
+			<div class="col-md-3 col-sm-6">
+				<div class="stats-card gradient-blue">
+					<div class="stats-icon">
+						<i class="fas fa-box"></i>
+					</div>
+					<div class="stats-info">
+						<h3 class="stats-number">0</h3>
+						<p class="stats-label">Total Products</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-6">
+				<div class="stats-card gradient-green">
+					<div class="stats-icon">
+						<i class="fas fa-shopping-cart"></i>
+					</div>
+					<div class="stats-info">
+						<h3 class="stats-number">0</h3>
+						<p class="stats-label">Total Orders</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-6">
+				<div class="stats-card gradient-orange">
+					<div class="stats-icon">
+						<i class="fas fa-users"></i>
+					</div>
+					<div class="stats-info">
+						<h3 class="stats-number">0</h3>
+						<p class="stats-label">Total Users</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-6">
+				<div class="stats-card gradient-purple">
+					<div class="stats-icon">
+						<i class="fas fa-rupee-sign"></i>
+					</div>
+					<div class="stats-info">
+						<h3 class="stats-number">₹0</h3>
+						<p class="stats-label">Total Revenue</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Dashboard Action Cards -->
+		<div class="row mb-4">
+			<div class="col-12">
+				<h4 class="fw-bold mb-4">
+					<i class="fas fa-cog me-2 text-primary"></i>Quick Actions
+				</h4>
+			</div>
+		</div>
+
+		<div class="row g-4">
+
+			<!-- Add Product Card -->
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<a href="/admin/loadAddProduct" class="text-decoration-none">
+					<div class="action-card card-primary">
+						<div class="action-card-inner">
+							<div class="action-icon">
+								<i class="fas fa-plus-circle"></i>
+							</div>
+							<h5 class="action-title">Add Product</h5>
+							<p class="action-description">Create new product listing</p>
+							<div class="action-arrow">
+								<i class="fas fa-arrow-right"></i>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+
+			<!-- Add Category Card -->
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<a href="/admin/category" class="text-decoration-none">
+					<div class="action-card card-warning">
+						<div class="action-card-inner">
+							<div class="action-icon">
+								<i class="fas fa-list"></i>
+							</div>
+							<h5 class="action-title">Add Category</h5>
+							<p class="action-description">Manage product categories</p>
+							<div class="action-arrow">
+								<i class="fas fa-arrow-right"></i>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+
+			<!-- View Products Card -->
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<a href="/admin/products" class="text-decoration-none">
+					<div class="action-card card-success">
+						<div class="action-card-inner">
+							<div class="action-icon">
+								<i class="fas fa-box-open"></i>
+							</div>
+							<h5 class="action-title">View Products</h5>
+							<p class="action-description">Browse all product listings</p>
+							<div class="action-arrow">
+								<i class="fas fa-arrow-right"></i>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+
+			<!-- Orders Card -->
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<a href="/admin/orders" class="text-decoration-none">
+					<div class="action-card card-info">
+						<div class="action-card-inner">
+							<div class="action-icon">
+								<i class="fas fa-shopping-bag"></i>
+							</div>
+							<h5 class="action-title">Orders</h5>
+							<p class="action-description">Manage customer orders</p>
+							<div class="action-arrow">
+								<i class="fas fa-arrow-right"></i>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+
+			<!-- Users Card -->
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<a href="/admin/users?type=1" class="text-decoration-none">
+					<div class="action-card card-purple">
+						<div class="action-card-inner">
+							<div class="action-icon">
+								<i class="fas fa-users"></i>
+							</div>
+							<h5 class="action-title">Users</h5>
+							<p class="action-description">Manage registered users</p>
+							<div class="action-arrow">
+								<i class="fas fa-arrow-right"></i>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+
+			<!-- Add Admin Card -->
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<a href="/admin/add-admin" class="text-decoration-none">
+					<div class="action-card card-danger">
+						<div class="action-card-inner">
+							<div class="action-icon">
+								<i class="fas fa-user-shield"></i>
+							</div>
+							<h5 class="action-title">Add Admin</h5>
+							<p class="action-description">Create new admin account</p>
+							<div class="action-arrow">
+								<i class="fas fa-arrow-right"></i>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+
+			<!-- Admin List Card -->
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<a href="/admin/users?type=2" class="text-decoration-none">
+					<div class="action-card card-dark">
+						<div class="action-card-inner">
+							<div class="action-icon">
+								<i class="fas fa-user-tie"></i>
+							</div>
+							<h5 class="action-title">Admin List</h5>
+							<p class="action-description">View all administrators</p>
+							<div class="action-arrow">
+								<i class="fas fa-arrow-right"></i>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+
+			<!-- Settings Card (Optional) -->
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<a href="#" class="text-decoration-none">
+					<div class="action-card card-secondary">
+						<div class="action-card-inner">
+							<div class="action-icon">
+								<i class="fas fa-cog"></i>
+							</div>
+							<h5 class="action-title">Settings</h5>
+							<p class="action-description">Configure system settings</p>
+							<div class="action-arrow">
+								<i class="fas fa-arrow-right"></i>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+
+		</div>
+
+		<!-- Recent Activity Section (Optional) -->
+		<div class="row mt-5">
+			<div class="col-12">
+				<div class="card border-0 shadow-sm rounded-4">
+					<div class="card-header bg-white border-0 py-4">
+						<h5 class="mb-0 fw-bold">
+							<i class="fas fa-clock text-primary me-2"></i>Recent Activity
+						</h5>
+					</div>
+					<div class="card-body">
+						<div class="text-center py-5 text-muted">
+							<i class="fas fa-history mb-3" style="font-size: 3rem; opacity: 0.3;"></i>
+							<p class="mb-0">No recent activity to display</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Custom Styles -->
+	<style>
+		/* Dashboard Header */
+        .dashboard-header {
+            position: relative;
+        }
+
+        .dashboard-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Stats Cards */
+        .stats-card {
+            border-radius: 1rem;
+            padding: 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .stats-icon {
+            font-size: 3rem;
+            opacity: 0.9;
+        }
+
+        .stats-info {
+            flex: 1;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stats-label {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .gradient-blue {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .gradient-green {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .gradient-orange {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .gradient-purple {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        /* Action Cards */
+        .action-card {
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            border: 2px solid transparent;
+        }
+
+        .action-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-card-inner {
+            padding: 2rem;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .action-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .action-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1a202c;
+            transition: all 0.3s ease;
+        }
+
+        .action-description {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+
+        .action-arrow {
+            font-size: 1.2rem;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover .action-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .action-card:hover .action-icon {
+            transform: scale(1.1);
+        }
+
+        /* Card Color Variants */
+        .card-primary:hover {
+            border-color: #667eea;
+        }
+
+        .card-primary .action-icon {
+            color: #667eea;
+        }
+
+        .card-primary:hover .action-card-inner {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        }
+
+        .card-warning:hover {
+            border-color: #f59e0b;
+        }
+
+        .card-warning .action-icon {
+            color: #f59e0b;
+        }
+
+        .card-warning:hover .action-card-inner {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);
+        }
+
+        .card-success:hover {
+            border-color: #10b981;
+        }
+
+        .card-success .action-icon {
+            color: #10b981;
+        }
+
+        .card-success:hover .action-card-inner {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+        }
+
+        .card-info:hover {
+            border-color: #3b82f6;
+        }
+
+        .card-info .action-icon {
+            color: #3b82f6;
+        }
+
+        .card-info:hover .action-card-inner {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+        }
+
+        .card-purple:hover {
+            border-color: #8b5cf6;
+        }
+
+        .card-purple .action-icon {
+            color: #8b5cf6;
+        }
+
+        .card-purple:hover .action-card-inner {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+        }
+
+        .card-danger:hover {
+            border-color: #ef4444;
+        }
+
+        .card-danger .action-icon {
+            color: #ef4444;
+        }
+
+        .card-danger:hover .action-card-inner {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(239, 68, 68, 0.05) 100%);
+        }
+
+        .card-dark:hover {
+            border-color: #1f2937;
+        }
+
+        .card-dark .action-icon {
+            color: #1f2937;
+        }
+
+        .card-dark:hover .action-card-inner {
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.05) 0%, rgba(31, 41, 55, 0.05) 100%);
+        }
+
+        .card-secondary:hover {
+            border-color: #6b7280;
+        }
+
+        .card-secondary .action-icon {
+            color: #6b7280;
+        }
+
+        .card-secondary:hover .action-card-inner {
+            background: linear-gradient(135deg, rgba(107, 114, 128, 0.05) 0%, rgba(107, 114, 128, 0.05) 100%);
+        }
+
+        .card-sh {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        .rounded-4 {
+            border-radius: 1rem !important;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .stats-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .stats-icon {
+                font-size: 2.5rem;
+            }
+
+            .stats-number {
+                font-size: 1.75rem;
+            }
+
+            .action-card-inner {
+                padding: 1.5rem;
+            }
+
+            .action-icon {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .action-card {
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .action-card:nth-child(1) { animation-delay: 0.1s; }
+        .action-card:nth-child(2) { animation-delay: 0.2s; }
+        .action-card:nth-child(3) { animation-delay: 0.3s; }
+        .action-card:nth-child(4) { animation-delay: 0.4s; }
+        .action-card:nth-child(5) { animation-delay: 0.5s; }
+        .action-card:nth-child(6) { animation-delay: 0.6s; }
+        .action-card:nth-child(7) { animation-delay: 0.7s; }
+        .action-card:nth-child(8) { animation-delay: 0.8s; }
+	</style>
+
+</section>
+</body>
+</html>

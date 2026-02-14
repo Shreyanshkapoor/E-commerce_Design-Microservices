@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{base::layout(~{::section})}">
+<head>
+	<meta charset="UTF-8">
+	<title>Register - E-Commerce Store</title>
+</head>
+<body>
+<section>
+	<div class="container-fluid py-5">
+		<div class="container">
+			<div class="row justify-content-center g-5 align-items-center">
+
+				<!-- Illustration Side -->
+				<div class="col-lg-5 d-none d-lg-block">
+					<div class="illustration-wrapper">
+						<div class="illustration-bg">
+							<div class="floating-element element-1">
+								<i class="fas fa-shopping-bag"></i>
+							</div>
+							<div class="floating-element element-2">
+								<i class="fas fa-user-plus"></i>
+							</div>
+							<div class="floating-element element-3">
+								<i class="fas fa-shield-alt"></i>
+							</div>
+						</div>
+						<div class="text-center text-white position-relative">
+							<div class="welcome-icon mb-4">
+								<i class="fas fa-store"></i>
+							</div>
+							<h2 class="fw-bold mb-3">Join Our Community</h2>
+							<p class="lead mb-4">Create an account to start shopping and enjoy exclusive benefits</p>
+							<div class="benefits-list">
+								<div class="benefit-item">
+									<i class="fas fa-check-circle"></i>
+									<span>Free delivery on first order</span>
+								</div>
+								<div class="benefit-item">
+									<i class="fas fa-check-circle"></i>
+									<span>Exclusive member discounts</span>
+								</div>
+								<div class="benefit-item">
+									<i class="fas fa-check-circle"></i>
+									<span>24/7 customer support</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Registration Form -->
+				<div class="col-lg-7">
+					<div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+						<!-- Card Header -->
+						<div class="card-header text-white text-center py-4 border-0"
+							 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+							<div class="header-icon mb-3">
+								<i class="fas fa-user-plus"></i>
+							</div>
+							<h4 class="mb-1 fw-bold">Create Account</h4>
+							<p class="mb-0 text-white-50">Fill in your details to get started</p>
+						</div>
+
+						<div class="card-body p-4 p-md-5">
+
+							<!-- Success/Error Messages -->
+							<th:block th:if="${session.succMsg}">
+								<div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4" role="alert">
+									<div class="d-flex align-items-center">
+										<i class="fas fa-check-circle fs-4 me-3"></i>
+										<div>
+											<strong>Success!</strong>
+											<p class="mb-0">[[${session.succMsg}]]</p>
+										</div>
+									</div>
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									<th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+								</div>
+							</th:block>
+
+							<th:block th:if="${session.errorMsg}">
+								<div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4" role="alert">
+									<div class="d-flex align-items-center">
+										<i class="fas fa-exclamation-circle fs-4 me-3"></i>
+										<div>
+											<strong>Error!</strong>
+											<p class="mb-0">[[${session.errorMsg}]]</p>
+										</div>
+									</div>
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									<th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+								</div>
+							</th:block>
+
+							<!-- Registration Form -->
+							<form action="/saveUser" enctype="multipart/form-data" id="userRegister" method="post" novalidate>
+
+								<!-- Personal Information Section -->
+								<div class="mb-4 pb-3 border-bottom">
+									<h6 class="fw-bold text-primary mb-3">
+										<i class="fas fa-user me-2"></i>Personal Information
+									</h6>
+
+									<div class="row g-3">
+										<!-- Full Name -->
+										<div class="col-md-6">
+											<label class="form-label fw-semibold text-muted">
+												<i class="fas fa-id-card text-primary me-2"></i>Full Name
+											</label>
+											<input required
+												   class="form-control form-control-lg rounded-3 border-2"
+												   name="name"
+												   type="text"
+												   placeholder="Enter your full name">
+										</div>
+
+										<!-- Mobile Number -->
+										<div class="col-md-6">
+											<label class="form-label fw-semibold text-muted">
+												<i class="fas fa-mobile-alt text-success me-2"></i>Mobile Number
+											</label>
+											<div class="input-group input-group-lg">
+                                                    <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                                        <i class="fas fa-phone text-muted"></i>
+                                                    </span>
+												<input required
+													   class="form-control border-start-0 rounded-end-3"
+													   name="mobileNumber"
+													   type="tel"
+													   placeholder="10-digit mobile number"
+													   pattern="[0-9]{10}"
+													   maxlength="10">
+											</div>
+										</div>
+
+										<!-- Email -->
+										<div class="col-12">
+											<label class="form-label fw-semibold text-muted">
+												<i class="fas fa-envelope text-info me-2"></i>Email Address
+											</label>
+											<div class="input-group input-group-lg">
+                                                    <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                                        <i class="fas fa-at text-muted"></i>
+                                                    </span>
+												<input required
+													   class="form-control border-start-0 rounded-end-3"
+													   name="email"
+													   type="email"
+													   placeholder="your@email.com">
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- Address Information Section -->
+								<div class="mb-4 pb-3 border-bottom">
+									<h6 class="fw-bold text-primary mb-3">
+										<i class="fas fa-map-marker-alt me-2"></i>Address Details
+									</h6>
+
+									<div class="row g-3">
+										<!-- Address -->
+										<div class="col-md-6">
+											<label class="form-label fw-semibold text-muted">
+												<i class="fas fa-home text-danger me-2"></i>Street Address
+											</label>
+											<input required
+												   class="form-control form-control-lg rounded-3 border-2"
+												   name="address"
+												   type="text"
+												   placeholder="House no., Street">
+										</div>
+
+										<!-- City -->
+										<div class="col-md-6">
+											<label class="form-label fw-semibold text-muted">
+												<i class="fas fa-city text-warning me-2"></i>City
+											</label>
+											<input required
+												   class="form-control form-control-lg rounded-3 border-2"
+												   name="city"
+												   type="text"
+												   placeholder="Enter city">
+										</div>
+
+										<!-- State -->
+										<div class="col-md-6">
+											<label class="form-label fw-semibold text-muted">
+												<i class="fas fa-flag text-primary me-2"></i>State
+											</label>
+											<input required
+												   class="form-control form-control-lg rounded-3 border-2"
+												   name="state"
+												   type="text"
+												   placeholder="Enter state">
+										</div>
+
+										<!-- Pincode -->
+										<div class="col-md-6">
+											<label class="form-label fw-semibold text-muted">
+												<i class="fas fa-mail-bulk text-success me-2"></i>Pincode
+											</label>
+											<input required
+												   class="form-control form-control-lg rounded-3 border-2"
+												   name="pincode"
+												   type="text"
+												   placeholder="6-digit pincode"
+												   pattern="[0-9]{6}"
+												   maxlength="6">
+										</div>
+									</div>
+								</div>
+
+								<!-- Security Information Section -->
+								<div class="mb-4 pb-3 border-bottom">
+									<h6 class="fw-bold text-primary mb-3">
+										<i class="fas fa-lock me-2"></i>Security Information
+									</h6>
+
+									<div class="row g-3">
+										<!-- Password -->
+										<div class="col-md-6">
+											<label class="form-label fw-semibold text-muted">
+												<i class="fas fa-key text-warning me-2"></i>Password
+											</label>
+											<div class="input-group input-group-lg">
+                                                    <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                                        <i class="fas fa-lock text-muted"></i>
+                                                    </span>
+												<input required
+													   class="form-control border-start-0 border-end-0"
+													   name="password"
+													   type="password"
+													   id="password"
+													   placeholder="Create password"
+													   minlength="6">
+												<button class="btn btn-outline-secondary rounded-end-3 border-start-0"
+														type="button"
+														onclick="togglePassword('password', this)">
+													<i class="fas fa-eye"></i>
+												</button>
+											</div>
+										</div>
+
+										<!-- Confirm Password -->
+										<div class="col-md-6">
+											<label class="form-label fw-semibold text-muted">
+												<i class="fas fa-check-circle text-success me-2"></i>Confirm Password
+											</label>
+											<div class="input-group input-group-lg">
+                                                    <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                                        <i class="fas fa-lock text-muted"></i>
+                                                    </span>
+												<input required
+													   class="form-control border-start-0 border-end-0"
+													   name="confirmpassword"
+													   type="password"
+													   id="confirmPassword"
+													   placeholder="Re-enter password"
+													   minlength="6">
+												<button class="btn btn-outline-secondary rounded-end-3 border-start-0"
+														type="button"
+														onclick="togglePassword('confirmPassword', this)">
+													<i class="fas fa-eye"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+
+									<!-- Password Match Indicator -->
+									<small id="passwordMatch" class="text-muted"></small>
+								</div>
+
+								<!-- Profile Picture Section -->
+								<div class="mb-4">
+									<h6 class="fw-bold text-primary mb-3">
+										<i class="fas fa-camera me-2"></i>Profile Picture (Optional)
+									</h6>
+
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-image text-purple me-2"></i>Upload Photo
+									</label>
+									<input class="form-control form-control-lg rounded-3 border-2"
+										   name="img"
+										   type="file"
+										   accept="image/*"
+										   id="profileImage">
+									<small class="text-muted">
+										<i class="fas fa-info-circle me-1"></i>Recommended: Square image, Max 2MB
+									</small>
+
+									<!-- Image Preview -->
+									<div class="mt-3 text-center" id="imagePreviewContainer" style="display: none;">
+										<img id="imagePreview"
+											 class="rounded-circle border border-4 border-primary shadow-lg"
+											 style="width: 120px; height: 120px; object-fit: cover;"
+											 alt="Preview">
+									</div>
+								</div>
+
+								<!-- Terms & Conditions -->
+								<div class="mb-4">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" id="termsCheck" required>
+										<label class="form-check-label" for="termsCheck">
+											I agree to the <a href="#" class="text-decoration-none">Terms & Conditions</a>
+											and <a href="#" class="text-decoration-none">Privacy Policy</a>
+										</label>
+									</div>
+								</div>
+
+								<!-- Submit Button -->
+								<button type="submit" class="btn btn-primary btn-lg w-100 rounded-3 shadow-sm">
+									<i class="fas fa-user-plus me-2"></i>Create Account
+								</button>
+
+							</form>
+						</div>
+
+						<!-- Card Footer -->
+						<div class="card-footer bg-light text-center py-3 border-0">
+							<p class="mb-0 text-muted">
+								Already have an account?
+								<a href="/signin" class="text-decoration-none fw-semibold">
+									Login here
+								</a>
+							</p>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Custom Styles -->
+	<style>
+		/* Illustration Side */
+        .illustration-wrapper {
+            position: relative;
+            padding: 3rem;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .illustration-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2rem;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .floating-element i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .element-1 {
+            top: 15%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+
+        .element-2 {
+            bottom: 25%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        .element-3 {
+            top: 55%;
+            left: 65%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-25px) rotate(180deg);
+            }
+        }
+
+        .welcome-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .welcome-icon i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .benefits-list {
+            text-align: left;
+            display: inline-block;
+            margin-top: 2rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            color: white;
+        }
+
+        .benefit-item i {
+            font-size: 1.25rem;
+            color: #4ade80;
+        }
+
+        /* Header Icon */
+        .header-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        /* Form Styles */
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .rounded-4 {
+            border-radius: 1rem !important;
+        }
+
+        .text-purple {
+            color: #764ba2;
+        }
+
+        .input-group:focus-within .input-group-text {
+            border-color: #667eea;
+            background-color: #f8f9ff;
+        }
+
+        .border-bottom {
+            border-color: rgba(0, 0, 0, 0.08) !important;
+        }
+
+        @media (max-width: 768px) {
+            .form-control-lg {
+                font-size: 1rem;
+            }
+        }
+	</style>
+
+	<!-- Scripts -->
+	<script>
+		// Toggle password visibility
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('userRegister');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const passwordMatch = document.getElementById('passwordMatch');
+            const profileImageInput = document.getElementById('profileImage');
+            const imagePreview = document.getElementById('imagePreview');
+            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+
+            // Password match validation
+            function checkPasswordMatch() {
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+
+                if (confirmPassword.length > 0) {
+                    if (password === confirmPassword) {
+                        passwordMatch.innerHTML = '<i class="fas fa-check-circle text-success me-1"></i>Passwords match';
+                        passwordMatch.className = 'text-success small mt-2 d-block';
+                    } else {
+                        passwordMatch.innerHTML = '<i class="fas fa-times-circle text-danger me-1"></i>Passwords do not match';
+                        passwordMatch.className = 'text-danger small mt-2 d-block';
+                    }
+                } else {
+                    passwordMatch.innerHTML = '';
+                }
+            }
+
+            passwordInput.addEventListener('input', checkPasswordMatch);
+            confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+
+            // Image preview
+            profileImageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        imagePreview.src = event.target.result;
+                        imagePreviewContainer.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreviewContainer.style.display = 'none';
+                }
+            });
+
+            // Form validation
+            form.addEventListener('submit', function(e) {
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+
+                if (password !== confirmPassword) {
+                    e.preventDefault();
+                    alert('Passwords do not match!');
+                    return false;
+                }
+
+                if (!form.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            });
+        });
+	</script>
+
+</section>
+</body>
+</html>

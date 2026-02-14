@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{base::layout(~{::section})}">
+<head>
+	<meta charset="UTF-8">
+	<title>My Profile</title>
+</head>
+<body>
+<section>
+	<div class="container-fluid mt-4 px-3 px-md-5 py-4">
+
+		<!-- Page Header -->
+		<div class="row mb-4">
+			<div class="col-12 text-center">
+				<h2 class="fw-bold mb-2">
+					<i class="fas fa-user-circle text-primary me-2"></i>My Profile
+				</h2>
+				<p class="text-muted">Manage your personal information and account settings</p>
+			</div>
+		</div>
+
+		<div class="row g-4">
+			<!-- Profile Information Card -->
+			<div class="col-lg-8 offset-lg-2">
+
+				<!-- Success/Error Messages -->
+				<th:block th:if="${session.succMsg}">
+					<div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4" role="alert">
+						<div class="d-flex align-items-center">
+							<i class="fas fa-check-circle fs-4 me-3"></i>
+							<div>
+								<strong>Success!</strong>
+								<p class="mb-0">[[${session.succMsg}]]</p>
+							</div>
+						</div>
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						<th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+					</div>
+				</th:block>
+
+				<th:block th:if="${session.errorMsg}">
+					<div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4" role="alert">
+						<div class="d-flex align-items-center">
+							<i class="fas fa-exclamation-circle fs-4 me-3"></i>
+							<div>
+								<strong>Error!</strong>
+								<p class="mb-0">[[${session.errorMsg}]]</p>
+							</div>
+						</div>
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						<th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+					</div>
+				</th:block>
+
+				<!-- Profile Card -->
+				<div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-4">
+
+					<!-- Card Header with Gradient -->
+					<div class="card-header text-white py-4 border-0"
+						 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+						<h5 class="mb-0 fw-bold">
+							<i class="fas fa-id-card me-2"></i>Profile Information
+						</h5>
+					</div>
+
+					<div class="card-body p-4">
+
+						<!-- Profile Image Section -->
+						<div class="text-center mb-4 pb-4 border-bottom">
+							<div class="position-relative d-inline-block">
+								<img alt="Profile Picture"
+									 th:src="@{'../img/profile_img/'+${user.profileImage}}"
+									 class="rounded-circle border border-4 border-white shadow-lg object-fit-cover"
+									 style="width: 140px; height: 140px; object-fit: cover;">
+								<span class="position-absolute bottom-0 end-0 bg-success border border-3 border-white rounded-circle"
+									  style="width: 30px; height: 30px;">
+										<i class="fas fa-check text-white" style="font-size: 0.7rem; position: relative; top: 5px; left: 7px;"></i>
+									</span>
+							</div>
+							<div class="mt-3">
+								<h4 class="fw-bold mb-1" th:text="${user.name}">User Name</h4>
+								<p class="text-muted mb-0">
+									<i class="fas fa-envelope me-1"></i>
+									<span th:text="${user.email}">user@example.com</span>
+								</p>
+							</div>
+						</div>
+
+						<!-- Profile Form -->
+						<form action="/admin/update-profile" method="post" enctype="multipart/form-data">
+
+							<div class="row g-3">
+
+								<!-- Name Field -->
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-user text-primary me-2"></i>Full Name
+									</label>
+									<input type="text"
+										   name="name"
+										   class="form-control form-control-lg rounded-3 border-2"
+										   th:value="${user.name}"
+										   placeholder="Enter your name"
+										   required>
+								</div>
+
+								<!-- Mobile Number Field -->
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-phone text-success me-2"></i>Mobile Number
+									</label>
+									<input type="text"
+										   name="mobileNumber"
+										   class="form-control form-control-lg rounded-3 border-2"
+										   th:value="${user.mobileNumber}"
+										   placeholder="Enter mobile number"
+										   required>
+								</div>
+
+								<!-- Email Field (Readonly) -->
+								<div class="col-md-12">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-envelope text-info me-2"></i>Email Address
+									</label>
+									<input type="email"
+										   class="form-control form-control-lg rounded-3 border-2 bg-light"
+										   readonly
+										   th:value="${user.email}"
+										   style="cursor: not-allowed;">
+									<small class="text-muted">
+										<i class="fas fa-lock me-1"></i>Email cannot be changed
+									</small>
+								</div>
+
+								<!-- Address Field -->
+								<div class="col-md-12">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-map-marker-alt text-danger me-2"></i>Address
+									</label>
+									<input type="text"
+										   name="address"
+										   class="form-control form-control-lg rounded-3 border-2"
+										   th:value="${user.address}"
+										   placeholder="Enter your address"
+										   required>
+								</div>
+
+								<!-- City Field -->
+								<div class="col-md-4">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-city text-warning me-2"></i>City
+									</label>
+									<input type="text"
+										   name="city"
+										   class="form-control form-control-lg rounded-3 border-2"
+										   th:value="${user.city}"
+										   placeholder="City"
+										   required>
+								</div>
+
+								<!-- State Field -->
+								<div class="col-md-4">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-flag text-primary me-2"></i>State
+									</label>
+									<input type="text"
+										   name="state"
+										   class="form-control form-control-lg rounded-3 border-2"
+										   th:value="${user.state}"
+										   placeholder="State"
+										   required>
+								</div>
+
+								<!-- Pincode Field -->
+								<div class="col-md-4">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-mail-bulk text-success me-2"></i>Pincode
+									</label>
+									<input type="text"
+										   name="pincode"
+										   class="form-control form-control-lg rounded-3 border-2"
+										   th:value="${user.pincode}"
+										   placeholder="Pincode"
+										   required>
+								</div>
+
+								<!-- Image Upload Field -->
+								<div class="col-md-12">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-camera text-purple me-2"></i>Profile Picture
+									</label>
+									<input type="file"
+										   name="img"
+										   class="form-control form-control-lg rounded-3 border-2"
+										   accept="image/*">
+									<small class="text-muted">
+										<i class="fas fa-info-circle me-1"></i>Supported formats: JPG, PNG, GIF (Max 5MB)
+									</small>
+								</div>
+
+								<!-- Role Field (Readonly) -->
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-user-tag text-indigo me-2"></i>Role
+									</label>
+									<input type="text"
+										   class="form-control form-control-lg rounded-3 border-2 bg-light"
+										   readonly
+										   th:value="${user.role}"
+										   style="cursor: not-allowed;">
+								</div>
+
+								<!-- Account Status Field (Readonly) -->
+								<div class="col-md-6">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-toggle-on text-success me-2"></i>Account Status
+									</label>
+									<input type="text"
+										   class="form-control form-control-lg rounded-3 border-2 bg-light"
+										   readonly
+										   th:value="${user.isEnable}"
+										   style="cursor: not-allowed;">
+									<input type="hidden" th:value="${user.id}" name="id">
+								</div>
+
+								<!-- Submit Button -->
+								<div class="col-12 mt-4">
+									<button type="submit" class="btn btn-lg btn-primary w-100 rounded-3 shadow-sm">
+										<i class="fas fa-save me-2"></i>Update Profile
+									</button>
+								</div>
+
+							</div>
+						</form>
+
+					</div>
+				</div>
+
+				<!-- Change Password Card -->
+				<div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+					<!-- Card Header with Gradient -->
+					<div class="card-header text-white py-4 border-0"
+						 style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+						<h5 class="mb-0 fw-bold">
+							<i class="fas fa-key me-2"></i>Change Password
+						</h5>
+					</div>
+
+					<div class="card-body p-4">
+
+						<!-- Password Security Info -->
+						<div class="alert alert-info border-0 rounded-3 mb-4">
+							<div class="d-flex align-items-start">
+								<i class="fas fa-shield-alt fs-4 me-3 mt-1"></i>
+								<div>
+									<strong>Password Security Tips:</strong>
+									<ul class="mb-0 mt-2 ps-3">
+										<li>Use at least 8 characters</li>
+										<li>Include uppercase and lowercase letters</li>
+										<li>Add numbers and special characters</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<!-- Change Password Form -->
+						<form action="/admin/change-password" method="post">
+
+							<div class="row g-3">
+
+								<!-- Current Password -->
+								<div class="col-12">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-lock text-warning me-2"></i>Current Password
+									</label>
+									<div class="input-group">
+										<input type="password"
+											   name="currentPassword"
+											   id="currentPassword"
+											   class="form-control form-control-lg rounded-start-3 border-2"
+											   placeholder="Enter current password"
+											   required>
+										<button class="btn btn-outline-secondary rounded-end-3"
+												type="button"
+												onclick="togglePassword('currentPassword', this)">
+											<i class="fas fa-eye"></i>
+										</button>
+									</div>
+								</div>
+
+								<!-- New Password -->
+								<div class="col-12">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-key text-primary me-2"></i>New Password
+									</label>
+									<div class="input-group">
+										<input type="password"
+											   name="newPassword"
+											   id="newPassword"
+											   class="form-control form-control-lg rounded-start-3 border-2"
+											   placeholder="Enter new password"
+											   required>
+										<button class="btn btn-outline-secondary rounded-end-3"
+												type="button"
+												onclick="togglePassword('newPassword', this)">
+											<i class="fas fa-eye"></i>
+										</button>
+									</div>
+								</div>
+
+								<!-- Confirm Password -->
+								<div class="col-12">
+									<label class="form-label fw-semibold text-muted">
+										<i class="fas fa-check-circle text-success me-2"></i>Confirm New Password
+									</label>
+									<div class="input-group">
+										<input type="password"
+											   name="confirmPassword"
+											   id="confirmPassword"
+											   class="form-control form-control-lg rounded-start-3 border-2"
+											   placeholder="Re-enter new password"
+											   required>
+										<button class="btn btn-outline-secondary rounded-end-3"
+												type="button"
+												onclick="togglePassword('confirmPassword', this)">
+											<i class="fas fa-eye"></i>
+										</button>
+									</div>
+								</div>
+
+								<!-- Submit Button -->
+								<div class="col-12 mt-4">
+									<button type="submit" class="btn btn-lg btn-danger w-100 rounded-3 shadow-sm">
+										<i class="fas fa-sync-alt me-2"></i>Update Password
+									</button>
+								</div>
+
+							</div>
+						</form>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Custom Styles -->
+	<style>
+		.form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(245, 87, 108, 0.3);
+        }
+
+        .card {
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .rounded-4 {
+            border-radius: 1rem !important;
+        }
+
+        .text-purple {
+            color: #764ba2;
+        }
+
+        .text-indigo {
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .form-control-lg {
+                font-size: 1rem;
+            }
+        }
+	</style>
+
+	<!-- Password Toggle Script -->
+	<script>
+		function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Password match validation
+        document.querySelector('form[action="/admin/change-password"]').addEventListener('submit', function(e) {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                e.preventDefault();
+                alert('New password and confirm password do not match!');
+            }
+        });
+	</script>
+
+</section>
+</body>
+</html>
