@@ -125,9 +125,6 @@ E-commerce_Design-Microservices/
 ├── config-server/
 └── README.md
 
-
-> Each folder represents an independent microservice.
-
 ---
 
 ## 🔄 Request Flow
