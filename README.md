@@ -143,7 +143,7 @@ E-commerce_Design-Microservices/
 
 - Java 17+
 - Maven / Gradle
-- MySQL Database
+- PostgreSQL Database
 - IDE (IntelliJ / VS Code)
 
 ---
