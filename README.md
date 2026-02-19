@@ -103,7 +103,7 @@ Handles:
 
 ### Database
 
-- MySQL / PostgreSQL (based on configuration)
+- PostgreSQL
 
 ### Architecture Tools
 
